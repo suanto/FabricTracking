@@ -12,7 +12,10 @@
 # META       "default_lakehouse_name": "lh_fabric_data",
 # META       "default_lakehouse_workspace_id": "f430fe2a-5ad8-433a-a3d0-686ad70831be"
 # META     },
-# META     "environment": {}
+# META     "environment": {
+# META       "environmentId": "f4abcd76-4988-8dbd-4f1b-3c8081be470b",
+# META       "workspaceId": "00000000-0000-0000-0000-000000000000"
+# META     }
 # META   }
 # META }
 

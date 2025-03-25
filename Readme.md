@@ -71,6 +71,11 @@ Fetch data, detect changes, write trigger blobs for the known issues.
 ## nb_browse_issues_and_roadmap
 For ad-hoc browsing.
 
+## env_no_caching
+nb_fetch_fabric_known_issues has to use this env as it contains the json_repair lib. 
+
+The env also disables the Fabric Intelligent Caching. Makes no big difference it is disabled as it is not needed when fetching and writing data.
+
 ## lh_fabric_data
 ### Tables
 |Table|Description|
