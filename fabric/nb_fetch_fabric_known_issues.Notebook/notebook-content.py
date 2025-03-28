@@ -250,24 +250,24 @@ data.write.mode('append').saveAsTable('fabric_known_issues_raw')
 # MAGIC CREATE OR REPLACE TEMPORARY VIEW yesterday AS (
 # MAGIC     SELECT *
 # MAGIC     FROM fabric_known_issues_raw AS r
-# MAGIC     WHERE r.Fetch_Timestamp >= date_add(current_date(), -7) AND r.fetch_timestamp < current_date()
+# MAGIC     WHERE r.Fetch_Timestamp >= date_add(current_date(), -1) AND r.fetch_timestamp < current_date()
 # MAGIC ) ;
 # MAGIC 
 # MAGIC -- New rows
-# MAGIC INSERT INTO fabric_known_issues_changes
+# MAGIC --INSERT INTO fabric_known_issues_changes
 # MAGIC     SELECT *, 'NEW' AS Change, CURRENT_DATE() as Change_Date
 # MAGIC     FROM today
 # MAGIC     WHERE today.Issue_ID NOT IN (SELECT Issue_ID FROM yesterday WHERE Issue_ID IS NOT NULL);
 # MAGIC 
 # MAGIC 
 # MAGIC -- Deleted rows
-# MAGIC INSERT INTO fabric_known_issues_changes
+# MAGIC --INSERT INTO fabric_known_issues_changes
 # MAGIC     SELECT *, 'DELETED' AS Change, CURRENT_DATE() as Change_Date
 # MAGIC     FROM yesterday 
 # MAGIC     WHERE yesterday.Issue_ID NOT IN (SELECT Issue_ID FROM today WHERE Issue_ID IS NOT NULL);
 # MAGIC 
 # MAGIC -- Changed rows
-# MAGIC INSERT INTO fabric_known_issues_changes
+# MAGIC --INSERT INTO fabric_known_issues_changes
 # MAGIC     SELECT *, 'CHANGED' AS CHANGE, CURRENT_DATE() as Change_Date
 # MAGIC     FROM today
 # MAGIC     LEFT ANTI JOIN fabric_known_issues_changes -- prevent NEW changes to come up again

@@ -15,19 +15,15 @@
 -- META   }
 -- META }
 
--- CELL ********************
+-- MARKDOWN ********************
 
-SELECT Fetch_Timestamp, count(*)
-FROM fabric_known_issues_raw
-GROUP BY Fetch_Timestamp
-ORDER BY Fetch_Timestamp DESC
+-- # Ad-hoc browsing notebook
+-- 
+-- This notebook contains ad-hoc queries to browse Fabric Roadma and Known Issues
 
--- METADATA ********************
+-- MARKDOWN ********************
 
--- META {
--- META   "language": "sparksql",
--- META   "language_group": "synapse_pyspark"
--- META }
+-- ## All Known Issue changes
 
 -- CELL ********************
 
@@ -42,13 +38,17 @@ ORDER BY Change_Date DESC
 -- META   "language_group": "synapse_pyspark"
 -- META }
 
+-- MARKDOWN ********************
+
+-- ## Compare Known Issue to yesterday
+
 -- CELL ********************
 
-CREATE OR REPLACE TEMPORARY VIEW latest_changes AS
+WITH latest_changes AS (
 SELECT *
 FROM fabric_known_issues_changes
 WHERE Change_Date = (SELECT MAX(Change_Date) FROM fabric_known_issues_changes)
-;
+)
 
 SELECT c.issue_id, r.issue_id, c.issue_published_date, r.issue_published_date, c.status, r.status, c.fixed_date, r.fixed_date, c.title, r.title, c.description, r.description, c.url, r.url, c.product_name, r.product_name, c.index, r.index
 FROM latest_changes AS c
@@ -61,6 +61,10 @@ ORDER BY r.Issue_id
 -- META   "language": "sparksql",
 -- META   "language_group": "synapse_pyspark"
 -- META }
+
+-- MARKDOWN ********************
+
+-- ## Latest raw list of known issues
 
 -- CELL ********************
 
@@ -76,72 +80,15 @@ ORDER BY Issue_ID DESC
 -- META   "language_group": "synapse_pyspark"
 -- META }
 
--- CELL ********************
+-- MARKDOWN ********************
 
-SELECT Fetch_Timestamp, count(*)
-FROM fabric_roadmap_raw
-GROUP BY Fetch_Timestamp
-ORDER BY Fetch_Timestamp DESC
-
--- METADATA ********************
-
--- META {
--- META   "language": "sparksql",
--- META   "language_group": "synapse_pyspark"
--- META }
+-- ## Fabric Roadmap Changes
 
 -- CELL ********************
 
 SELECT *
 FROM fabric_roadmap_changes
 ORDER BY Change_Date DESC, title ASC, change DESC
-
--- METADATA ********************
-
--- META {
--- META   "language": "sparksql",
--- META   "language_group": "synapse_pyspark"
--- META }
-
--- CELL ********************
-
-SELECT DISTINCT fetch_timestamp
-FROM fabric_roadmap_raw;
-
--- METADATA ********************
-
--- META {
--- META   "language": "sparksql",
--- META   "language_group": "synapse_pyspark"
--- META }
-
--- CELL ********************
-
-SELECT *
-FROM fabric_roadmap_raw
-WHERE Fetch_Timestamp > '2025-03-08'
-    AND Fetch_Timestamp < '2025-03-09'
-ORDER BY title ASC
-
--- METADATA ********************
-
--- META {
--- META   "language": "sparksql",
--- META   "language_group": "synapse_pyspark"
--- META }
-
--- CELL ********************
-
-CREATE OR REPLACE TEMPORARY VIEW current_roadmap AS
-    SELECT *
-    FROM fabric_roadmap_raw
-    WHERE Fetch_Timestamp = (SELECT MAX(Fetch_Timestamp) FROM fabric_roadmap_raw);
-
-SELECT COUNT(*) AS count, fabric_area
-FROM current_roadmap
-WHERE deadline LIKE 'Q4%'
-GROUP BY fabric_area
-ORDER BY fabric_area
 
 -- METADATA ********************
 
