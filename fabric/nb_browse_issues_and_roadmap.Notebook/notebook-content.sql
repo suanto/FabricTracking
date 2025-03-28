@@ -23,7 +23,7 @@
 
 -- MARKDOWN ********************
 
--- ## All Known Issue changes
+-- ## Fabric Known Issue Changes
 
 -- CELL ********************
 
@@ -94,5 +94,42 @@ ORDER BY Change_Date DESC, title ASC, change DESC
 
 -- META {
 -- META   "language": "sparksql",
+-- META   "language_group": "synapse_pyspark"
+-- META }
+
+-- MARKDOWN ********************
+
+-- ## Write a test blob to a trigger store
+
+-- CELL ********************
+
+-- MAGIC %%pyspark
+-- MAGIC notebookutils.fs.put('Files/trigger_blobs/roadmap/testblob_can_be_removed', '')
+
+
+-- METADATA ********************
+
+-- META {
+-- META   "language": "python",
+-- META   "language_group": "synapse_pyspark"
+-- META }
+
+-- MARKDOWN ********************
+
+-- ## Test alerting
+
+-- CELL ********************
+
+-- MAGIC %%pyspark
+-- MAGIC import uuid
+-- MAGIC uuid = uuid.uuid4()
+-- MAGIC 
+-- MAGIC notebookutils.fs.put(f"Files/trigger_blobs/roadmap/roadmap_alert_test_can_be_removed_{uuid}", '')
+-- MAGIC notebookutils.fs.put(f"Files/trigger_blobs/known_issues/known_issues_alert_test_can_be_removed_{uuid}", '')
+
+-- METADATA ********************
+
+-- META {
+-- META   "language": "python",
 -- META   "language_group": "synapse_pyspark"
 -- META }
