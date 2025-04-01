@@ -310,7 +310,6 @@ def detect_changes_and_notify(known_issues_or_roadmap : str):
         print("Wrote triggering blob")
 
 detect_changes_and_notify('known_issues')
-detect_changes_and_notify('roadmap')
 
 # METADATA ********************
 

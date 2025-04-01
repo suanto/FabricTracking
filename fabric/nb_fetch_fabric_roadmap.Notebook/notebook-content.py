@@ -140,3 +140,30 @@ df.write.mode("append").saveAsTable("fabric_roadmap_raw")
 # META   "language": "sparksql",
 # META   "language_group": "synapse_pyspark"
 # META }
+
+# MARKDOWN ********************
+
+# ## Send notifications
+
+# CELL ********************
+
+import datetime
+
+def detect_changes_and_notify(known_issues_or_roadmap : str):
+    today = datetime.datetime.now().strftime("%Y-%m-%d")
+    ki_change_count = (spark.table(f"fabric_{known_issues_or_roadmap}_changes")
+        .where(f"change_date == '{today}'")
+    ).count()
+
+    if (ki_change_count > 0):
+        notebookutils.fs.put(f"Files/trigger_blobs/{known_issues_or_roadmap}/{today}", '')
+        print("Wrote triggering blob")
+
+detect_changes_and_notify('roadmap')
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
